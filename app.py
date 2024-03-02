@@ -1,6 +1,6 @@
 from flask import Flask,jsonify,request
 from pymongo import MongoClient
-
+from bson import ObjectId
 app = Flask(__name__)
 client = MongoClient('mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/')
 db = client['test']
@@ -47,22 +47,36 @@ def create_user_details():
         return jsonify({'message': 'User details created successfully'}), 201
     else:
         return jsonify({'error': 'Invalid user details schema'}), 400
-
+from flask import jsonify
+def find_user_details_by_id(user_details_id, collection_user_details):
+    try:
+        # Convert the user_details_id string to ObjectId
+        user_details_id = ObjectId(user_details_id)
+        # Find the document by _id
+        user_details = collection_user_details.find_one({'_id': user_details_id})
+        if user_details:
+            # Convert ObjectId to string
+            user_details['_id'] = str(user_details['_id'])
+            return user_details
+        else:
+            return None  # Document not found
+    except Exception as e:
+        print("Error:", e)
+        return None  # Return None in case of any error
+    
 @app.route('/user_details/<id>', methods=['GET'])
 def get_user_details(id):
-    data = collection_user_details.find_one({'id': id})
-    if data:
-        return jsonify(data), 200
+    # Call the find_user_details_by_id function
+    user_details = find_user_details_by_id(id, collection_user_details)
+    
+    if user_details:
+        return jsonify(user_details), 200
     else:
-        return jsonify({'error': 'User details not found'}), 404
+        return jsonify({'error': 'User details not found'}), 400
 
 # Other CRUD routes...
 
 def validate_user_details_schema(data):
-    if 'id' not in data:
-        print("Missing 'id' field")
-        return False
-    
     if 'title' not in data:
         print("Missing 'title' field")
         return False

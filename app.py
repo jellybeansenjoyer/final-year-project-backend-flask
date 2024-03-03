@@ -5,40 +5,43 @@ app = Flask(__name__)
 client = MongoClient('mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/')
 db = client['test']
 collection_user_details = db['user_details']
-collection_details = db['details']
-collection_reviews = db['reviews']
-# Schema for user_details collection
-# Schema for user_details collection
+collection_user_reviews = db['reviews']
+
 user_details_schema = {
     "_id": {"type": "string", "auto": True},
     "title": {"type": "string"},
     "price": {"type": "string"},
     "picture": {"type": "string"},
-    "technical-details": {
-        "type": "dict",
+    "technical-details": { #list of objects to technical details
+        "type": "list",
         "schema": {
-            "details_id": {"type": "string", "required": False}
+            "type":"dict",
+            "schema":{
+            "property": {"type": "string", "required": False},
+            "value": {"type": "string", "required": True},
+        }
         }
     },
-    "details": {"type": "list", "schema": {"type": "string"}},
-    "similar_products": {"type": "list", "schema": {"type": "string"}},
-    "reviews": {"type": "list", "schema": {"type": "string"}}
+    "details": {"type": "list", "schema": {"type": "string"}}, #list of strings of description
+    "similar_products": {"type": "list", "schema": {"type": "string"}}, #list of id of similar products which are user_details itself
+    "reviews": {"type": "string"} #reference to reviews table
 }
 
-# Schema for details collection
-details_schema = {
-    "_id": {"type": "string", "auto": True},
-    "properties": {"type": "dict", "schema": {"type": "string"}}
-}
 
 # Schema for reviews collection
-reviews_schema = {
+reviews= {
     "_id": {"type": "string", "auto": True},
-    "images": {"type": "list", "schema": {"type": "string"}},
-    "review": {"type": "string"},
-    "rating": {"type": "number"}
+    "type": "list",
+    "schema": {
+        "type": "dict",
+        "schema": {
+            "title": {"type": "string", "required": True},
+            "images": {"type": "list", "required": False},
+            "review": {"type": "string"},
+            "rating": {"type": "number"}
+        }
+    }
 }
-
 @app.route('/user_details', methods=['POST'])
 def create_user_details():
     data = request.json

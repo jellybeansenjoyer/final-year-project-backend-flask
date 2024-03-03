@@ -1,6 +1,8 @@
 from flask import Flask,jsonify,request
 from pymongo import MongoClient
 from bson import ObjectId
+from flask import jsonify
+
 app = Flask(__name__)
 client = MongoClient('mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/')
 db = client['test']
@@ -42,6 +44,7 @@ reviews= {
         }
     }
 }
+
 @app.route('/user_details', methods=['POST'])
 def create_user_details():
     data = request.json
@@ -50,7 +53,7 @@ def create_user_details():
         return jsonify({'message': 'User details created successfully'}), 201
     else:
         return jsonify({'error': 'Invalid user details schema'}), 400
-from flask import jsonify
+    
 def find_user_details_by_id(user_details_id, collection_user_details):
     try:
         # Convert the user_details_id string to ObjectId
@@ -76,6 +79,10 @@ def get_user_details(id):
         return jsonify(user_details), 200
     else:
         return jsonify({'error': 'User details not found'}), 400
+    
+@app.route('/', methods=['GET'])
+def get_hello():
+        return jsonify("hello"), 200
 
 # Other CRUD routes...
 
@@ -93,27 +100,42 @@ def validate_user_details_schema(data):
         return False
     
     if 'technical-details' in data:
-        if 'details_id' not in data['technical-details']:
-            print("Missing 'details_id' in 'technical-details'")
+        if not isinstance(data['technical-details'], list):
+            print("'technical-details' must be a list")
             return False
+            
+        for detail in data['technical-details']:
+            if not isinstance(detail, dict):
+                print("Invalid element in 'technical-details':", detail)
+                return False
+            if 'property' not in detail:
+                print("Missing 'property' in 'technical-details' detail:", detail)
+                return False
+            if 'value' not in detail:
+                print("Missing 'value' in 'technical-details' detail:", detail)
 
     if 'details' in data:
+        if not isinstance(data['details'], list):
+            print("'details' must be a list")
+            return False
         if not all(isinstance(detail, str) for detail in data['details']):
             print("Invalid value in 'details'")
             return False
 
     if 'similar_products' in data:
+        if not isinstance(data['similar_products'], list):
+            print("'similar_products' must be a list")
+            return False
         if not all(isinstance(product_id, str) for product_id in data['similar_products']):
             print("Invalid value in 'similar_products'")
             return False
 
     if 'reviews' in data:
-        if not all(isinstance(review_id, str) for review_id in data['reviews']):
-            print("Invalid value in 'reviews'")
+        if not isinstance(data['reviews'], str):
+            print("'reviews' must be a string")
             return False
 
     return True
-
 
 if __name__ == '__main__':
     app.run(debug=True)

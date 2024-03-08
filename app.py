@@ -1,19 +1,53 @@
-{
-    "title": "Sample Product",
-    "price": "100.00",
-    "picture": "https://example.com/image.jpg",
-    "technical-details": [
-        {"property": "Color", "value": "Red"},
-        {"property": "Size", "value": "Large"}
-    ],
-    "details": ["Description line 1", "Description line 2"],
-    "similar_products": ["product_id_1", "product_id_2"],
-    "reviews": "reviews_id",
-    "original_price": "120.00",
-    "average_price": "110.00",
-    "highest_price": "130.00",
-    "lowest_price": "90.00",
-    "sentimental_score": "5",
-    "category": "Electronics",
-    "url": "https://example.com/product"
-}
+from flask import Flask, jsonify, request
+from flask_pymongo import PyMongo
+from marshmallow import Schema, fields, ValidationError
+from bson import ObjectId
+
+app = Flask(__name__)
+app.config['MONGO_URI'] = 'mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/test'
+mongo = PyMongo(app)
+
+# Define schemas using Marshmallow
+class TechnicalDetailSchema(Schema):
+    property = fields.String(required=False)
+    value = fields.String(required=True)
+
+class UserDetailsSchema(Schema):
+    _id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    price = fields.String(required=True)
+    picture = fields.String(required=True)
+    technical_details = fields.List(fields.Nested(TechnicalDetailSchema))
+    details = fields.List(fields.String())
+    similar_products = fields.List(fields.String())
+    reviews = fields.String()
+    original_price = fields.String()
+    average_price = fields.String()
+    highest_price = fields.String()
+    lowest_price = fields.String()
+    sentimental_score = fields.String()
+    category = fields.String()
+    url = fields.String()
+
+# Routes
+@app.route('/user_details', methods=['POST'])
+def create_user_details():
+    json_data = request.json
+    try:
+        validated_data = UserDetailsSchema().load(json_data)
+        inserted_id = mongo.db.user_details.insert_one(validated_data).inserted_id
+        return jsonify({'message': 'User details created successfully', '_id': str(inserted_id)}), 201
+    except ValidationError as e:
+        return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
+
+@app.route('/user_details/<id>', methods=['GET'])
+def get_user_details(id):
+    user_details = mongo.db.user_details.find_one_or_404({'_id': ObjectId(id)})
+    return jsonify(user_details), 200
+
+@app.route('/', methods=['GET'])
+def get_hello():
+    return jsonify("hello"), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)

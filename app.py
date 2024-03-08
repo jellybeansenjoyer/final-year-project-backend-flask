@@ -104,5 +104,12 @@ def create_review():
 def get_hello():
     return jsonify("hello"), 200
 
+@app.route('/user_details', methods=['GET'])
+def get_all_user_details():
+    user_details = list(mongo.db.user_details.find({}))  # Retrieve all documents from user_details collection
+    for user_detail in user_details:
+        user_detail['_id'] = str(user_detail['_id'])  # Convert ObjectId to string for each document
+    return jsonify(user_details), 200
+
 if __name__ == '__main__':
     app.run(debug=True)

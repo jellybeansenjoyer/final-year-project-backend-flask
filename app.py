@@ -111,5 +111,12 @@ def get_all_user_details():
         user_detail['_id'] = str(user_detail['_id'])  # Convert ObjectId to string for each document
     return jsonify(user_details), 200
 
+@app.route('/users', methods=['GET'])
+def get_all_users():
+    users = list(mongo.db.users.find({}))  # Retrieve all documents from user_details collection
+    for user in users:
+        user['_id'] = str(user['_id'])  # Convert ObjectId to string for each document
+    return jsonify(users), 200
+
 if __name__ == '__main__':
     app.run(debug=True)

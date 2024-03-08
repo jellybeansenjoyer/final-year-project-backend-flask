@@ -12,6 +12,13 @@ class TechnicalDetailSchema(Schema):
     property = fields.String(required=False)
     value = fields.String(required=True)
 
+class ReviewSchema(Schema):
+    _id = fields.String(dump_only=True)
+    title = fields.String(required=True)
+    images = fields.List(fields.String(), required=False)
+    review = fields.String()
+    rating = fields.Float()
+
 class UserDetailsSchema(Schema):
     _id = fields.String(dump_only=True)
     title = fields.String(required=True)
@@ -20,7 +27,7 @@ class UserDetailsSchema(Schema):
     technical_details = fields.List(fields.Nested(TechnicalDetailSchema))
     details = fields.List(fields.String())
     similar_products = fields.List(fields.String())
-    reviews = fields.String()
+    reviews = fields.Nested(ReviewSchema, many=True)
     original_price = fields.String()
     average_price = fields.String()
     highest_price = fields.String()
@@ -44,6 +51,16 @@ def create_user_details():
 def get_user_details(id):
     user_details = mongo.db.user_details.find_one_or_404({'_id': ObjectId(id)})
     return jsonify(user_details), 200
+
+@app.route('/reviews', methods=['POST'])
+def create_review():
+    json_data = request.json
+    try:
+        validated_data = ReviewSchema().load(json_data)
+        inserted_id = mongo.db.reviews.insert_one(validated_data).inserted_id
+        return jsonify({'message': 'Review created successfully', '_id': str(inserted_id)}), 201
+    except ValidationError as e:
+        return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
 
 @app.route('/', methods=['GET'])
 def get_hello():

@@ -10,9 +10,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MONGO_URI'] = 'mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/test2'
 mongo = PyMongo(app)
 
-@app.route("/")
-@cross_origin()
-
 
 # Define schemas using Marshmallow
 class TechnicalDetailSchema(Schema):
@@ -26,7 +23,7 @@ class ReviewSchema(Schema):
     review = fields.String()
     rating = fields.Float()
 
-class UserDetailsSchema(Schema):
+class ProductDetailsSchema(Schema):
     _id = fields.String(dump_only=True)
     title = fields.String(required=True)
     price = fields.String(required=True)
@@ -69,10 +66,10 @@ def get_user(id):
     user = mongo.db.users.find_one_or_404({'_id': ObjectId(id)})
     user['_id'] = str(user['_id'])  # Convert ObjectId to string
     
-    # Fetch details of each product from user_details collection
+    # Fetch details of each product from product_details collection
     product_details = []
     for product_id in user['products']:
-        product = mongo.db.user_details.find_one_or_404({'_id': ObjectId(product_id)})
+        product = mongo.db.product_details.find_one_or_404({'_id': ObjectId(product_id)})
         product['_id'] = str(product['_id'])  # Convert ObjectId to string
         product_details.append(product)
     
@@ -81,28 +78,28 @@ def get_user(id):
     
     return jsonify(user), 200
 # Routes
-@app.route('/user_details/', methods=['POST'])
-def create_user_details():
+@app.route('/product_details/', methods=['POST'])
+def create_product_details():
     user_id = request.args.get('_id')
     if user_id is None or user_id.strip() == '':
-        # If _id is null or blank, create a new entry in user_details
+        # If _id is null or blank, create a new entry in product_details
         json_data = request.json
         try:
-            validated_data = UserDetailsSchema().load(json_data)
-            inserted_id = mongo.db.user_details.insert_one(validated_data).inserted_id
-            return jsonify({'message': 'User details created successfully', '_id': str(inserted_id)}), 201
+            validated_data = ProductDetailsSchema().load(json_data)
+            inserted_id = mongo.db.product_details.insert_one(validated_data).inserted_id
+            return jsonify({'message': 'Product details created successfully', '_id': str(inserted_id)}), 201
         except ValidationError as e:
             return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
     else:
-        # If _id is valid, create a record in user_details and add the generated _id to userSchema's products list
+        # If _id is valid, create a record in product_details and add the generated _id to userSchema's products list
         user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
         if user is None:
             return jsonify({'error': 'User not found'}), 404
         
         json_data = request.json
         try:
-            validated_data = UserDetailsSchema().load(json_data)
-            inserted_id = mongo.db.user_details.insert_one(validated_data).inserted_id
+            validated_data = ProductDetailsSchema().load(json_data)
+            inserted_id = mongo.db.product_details.insert_one(validated_data).inserted_id
             product_id = str(inserted_id)
             print(product_id)
             # Update userSchema's products list with the new product id
@@ -116,11 +113,11 @@ def create_user_details():
         except ValidationError as e:
             return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
 
-@app.route('/user_details/<id>', methods=['GET'])
-def get_user_details(id):
-    user_details = mongo.db.user_details.find_one_or_404({'_id': ObjectId(id)})
-    user_details['_id'] = str(user_details['_id'])  # Convert ObjectId to string
-    return jsonify(user_details), 200
+@app.route('/product_details/<id>', methods=['GET'])
+def get_product_details(id):
+    product_details = mongo.db.product_details.find_one_or_404({'_id': ObjectId(id)})
+    product_details['_id'] = str(product_details['_id'])  # Convert ObjectId to string
+    return jsonify(product_details), 200
 
 @app.route('/reviews', methods=['POST'])
 def create_review():
@@ -136,16 +133,16 @@ def create_review():
 def get_hello():
     return jsonify("hello"), 200
 
-@app.route('/user_details', methods=['GET'])
-def get_all_user_details():
-    user_details = list(mongo.db.user_details.find({}))  # Retrieve all documents from user_details collection
-    for user_detail in user_details:
+@app.route('/product_details', methods=['GET'])
+def get_all_product_details():
+    product_details = list(mongo.db.product_details.find({}))  # Retrieve all documents from product_details collection
+    for user_detail in product_details:
         user_detail['_id'] = str(user_detail['_id'])  # Convert ObjectId to string for each document
-    return jsonify(user_details), 200
+    return jsonify(product_details), 200
 
 @app.route('/users', methods=['GET'])
 def get_all_users():
-    users = list(mongo.db.users.find({}))  # Retrieve all documents from user_details collection
+    users = list(mongo.db.users.find({}))  # Retrieve all documents from product_details collection
     for user in users:
         user['_id'] = str(user['_id'])  # Convert ObjectId to string for each document
     return jsonify(users), 200

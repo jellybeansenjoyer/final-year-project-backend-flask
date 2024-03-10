@@ -93,7 +93,7 @@ def get_user(id):
     
     return jsonify(user), 200
 # Routes
-@app.route('/product_details/', methods=['POST'])
+@app.route('/product_details', methods=['POST'])
 def create_product_details():
     user_id = request.args.get('_id')
     if user_id is None or user_id.strip() == '':

@@ -72,10 +72,11 @@ def login():
     password = json_data.get('password', None)
     user = mongo.db.users.find_one({'emailid': email})
     if user and bcrypt.check_password_hash(user['password'], password):
-        return jsonify({'message': 'Login successful'}), 200
+        # Return user id upon successful login
+        return jsonify({'user_id': str(user['_id']), 'message': 'Login successful'}), 200
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
-
+    
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
     user = mongo.db.users.find_one_or_404({'_id': ObjectId(id)})

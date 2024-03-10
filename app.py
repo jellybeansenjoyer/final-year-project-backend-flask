@@ -68,9 +68,9 @@ def create_user():
 @app.route('/login', methods=['POST'])
 def login():
     json_data = request.json
-    username = json_data.get('username', None)
+    email = json_data.get('emailid', None)
     password = json_data.get('password', None)
-    user = mongo.db.users.find_one({'username': username})
+    user = mongo.db.users.find_one({'emailid': email})
     if user and bcrypt.check_password_hash(user['password'], password):
         return jsonify({'message': 'Login successful'}), 200
     else:

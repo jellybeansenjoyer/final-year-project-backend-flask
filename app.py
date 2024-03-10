@@ -2,10 +2,17 @@ from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
 from marshmallow import Schema, fields, ValidationError
 from bson import ObjectId
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MONGO_URI'] = 'mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/test2'
 mongo = PyMongo(app)
+
+@app.route("/")
+@cross_origin()
+
 
 # Define schemas using Marshmallow
 class TechnicalDetailSchema(Schema):

@@ -2,10 +2,15 @@ from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
 from marshmallow import Schema, fields, ValidationError
 from bson import ObjectId
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MONGO_URI'] = 'mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/test2'
 mongo = PyMongo(app)
+
+
 
 # Define schemas using Marshmallow
 class TechnicalDetailSchema(Schema):
@@ -74,15 +79,40 @@ def get_user(id):
     
     return jsonify(user), 200
 # Routes
-@app.route('/user_details', methods=['POST'])
+@app.route('/user_details/', methods=['POST'])
 def create_user_details():
-    json_data = request.json
-    try:
-        validated_data = UserDetailsSchema().load(json_data)
-        inserted_id = mongo.db.user_details.insert_one(validated_data).inserted_id
-        return jsonify({'message': 'User details created successfully', '_id': str(inserted_id)}), 201
-    except ValidationError as e:
-        return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
+    user_id = request.args.get('_id')
+    if user_id is None or user_id.strip() == '':
+        # If _id is null or blank, create a new entry in user_details
+        json_data = request.json
+        try:
+            validated_data = UserDetailsSchema().load(json_data)
+            inserted_id = mongo.db.user_details.insert_one(validated_data).inserted_id
+            return jsonify({'message': 'User details created successfully', '_id': str(inserted_id)}), 201
+        except ValidationError as e:
+            return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
+    else:
+        # If _id is valid, create a record in user_details and add the generated _id to userSchema's products list
+        user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+        if user is None:
+            return jsonify({'error': 'User not found'}), 404
+        
+        json_data = request.json
+        try:
+            validated_data = UserDetailsSchema().load(json_data)
+            inserted_id = mongo.db.user_details.insert_one(validated_data).inserted_id
+            product_id = str(inserted_id)
+            print(product_id)
+            # Update userSchema's products list with the new product id
+            mongo.db.users.update_one({'_id': ObjectId(user_id)}, {'$push': {'products': product_id}})
+            
+            # Fetch the updated user data to ensure products list is up to date
+            updated_user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+            updated_user['_id'] = str(updated_user['_id'])  # Convert ObjectId to string
+            
+            return jsonify({'message': 'User details created successfully', '_id': product_id, 'user': updated_user}), 201
+        except ValidationError as e:
+            return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
 
 @app.route('/user_details/<id>', methods=['GET'])
 def get_user_details(id):

@@ -3,13 +3,15 @@ from flask_pymongo import PyMongo
 from marshmallow import Schema, fields, ValidationError
 from bson import ObjectId
 from flask_cors import CORS, cross_origin
+from flask_bcrypt import Bcrypt
+
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MONGO_URI'] = 'mongodb+srv://kashyap:kashyap@raghav.jvmxdco.mongodb.net/test2'
 mongo = PyMongo(app)
-
+bcrypt = Bcrypt(app)
 
 # Define schemas using Marshmallow
 class TechnicalDetailSchema(Schema):
@@ -44,6 +46,7 @@ class UserSchema(Schema):
     _id = fields.String(dump_only=True)
     name = fields.String(required=True)
     username = fields.String(required=True)
+    password = fields.String(required=True,load_only=True)
     emailid = fields.String(required=True)
     address = fields.String(required=True)
     phone_number = fields.String(required=True)
@@ -51,15 +54,27 @@ class UserSchema(Schema):
     products = fields.List(fields.String())
 
 # Routes
-@app.route('/users', methods=['POST'])
+@app.route('/signUp', methods=['POST'])
 def create_user():
     json_data = request.json
     try:
         validated_data = UserSchema().load(json_data)
+        validated_data['password'] = bcrypt.generate_password_hash(validated_data['password']).decode('utf-8')
         inserted_id = mongo.db.users.insert_one(validated_data).inserted_id
         return jsonify({'message': 'User created successfully', '_id': str(inserted_id)}), 201
     except ValidationError as e:
         return jsonify({'error': 'Validation failed', 'messages': e.messages}), 400
+
+@app.route('/login', methods=['POST'])
+def login():
+    json_data = request.json
+    username = json_data.get('username', None)
+    password = json_data.get('password', None)
+    user = mongo.db.users.find_one({'username': username})
+    if user and bcrypt.check_password_hash(user['password'], password):
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'error': 'Invalid username or password'}), 401
 
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):

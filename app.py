@@ -147,5 +147,23 @@ def get_all_users():
         user['_id'] = str(user['_id'])  # Convert ObjectId to string for each document
     return jsonify(users), 200
 
+from flask import jsonify
+
+@app.route('/userProducts/<user_id>', methods=['GET'])
+def get_user_products(user_id):
+    user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+    if user is None:
+        return jsonify({'error': 'User not found'}), 404
+
+    product_ids = user.get('products', [])
+    products = []
+    for product_id in product_ids:
+        product = mongo.db.product_details.find_one({'_id': ObjectId(product_id)})
+        if product:
+            product['_id'] = str(product['_id'])
+            products.append(product)
+    
+    return jsonify(products), 200
+
 if __name__ == '__main__':
     app.run(debug=True)

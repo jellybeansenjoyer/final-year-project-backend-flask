@@ -83,7 +83,70 @@ try:
 
 except Exception as e:
     print("An error occurred:", e)
+try:
+    # Wait for the product details table to be visible
+    table_element = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.ID, "productDetails_detailBullets_sections1"))
+    )
+    
+    # Get the HTML content of the table
+    table_html = table_element.get_attribute('innerHTML')
+    
+    # Parse the HTML using BeautifulSoup
+    soup = BeautifulSoup(table_html, 'html.parser')
+    
+    # Find all rows in the table
+    rows = soup.find_all('tr')
+    
+    # Create an empty dictionary to store the extracted data
+    data_dict = {}
+    
+    # Loop through each row
+    for row in rows:
+        # Find the header and data cells
+        header_cell = row.find('th')
+        data_cell = row.find('td')
+        
+        # Extract the text from header and data cells
+        if header_cell and data_cell:
+            header_text = header_cell.text.strip()
+            data_text = data_cell.text.strip()
+            
+            # Add the name-value pair to the dictionary
+            data_dict[header_text] = data_text
+    
+    # Print the extracted data dictionary
+    print("Technical_Details:")
+    cleaned_data_dict.update(data_dict)
+    print(cleaned_data_dict)
+except Exception as e:
+    print("An error occurred:", e)
+    
 
-finally:
-    # Quit the driver
-    driver.quit()
+try:
+    # Wait for the div element to be visible
+    div_element = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.ID, "wayfinding-breadcrumbs_feature_div"))
+    )
+    
+    # Get the HTML content of the div
+    div_html = div_element.get_attribute('innerHTML')
+    
+    # Parse the HTML using BeautifulSoup
+    soup = BeautifulSoup(div_html, 'html.parser')
+    
+    # Find the ul element inside the div
+    ul_element = soup.find('ul', class_='a-unordered-list')
+    
+    a_tag = ul_element.find('a')
+    # Extract the text of the <a> tag
+    if a_tag:
+        a_tag_text = a_tag.text.strip()
+        print("Category:", a_tag_text)
+    else:
+        print("No <a> tag found within the <ul> element.")
+
+except Exception as e:
+    print("An error occurred:", e)    # Quit the driver
+
+driver.quit()

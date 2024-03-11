@@ -293,7 +293,7 @@ def create_product_details():
 # Flask route to create product details
 @app.route('/product_details_scrape', methods=['POST'])
 def create_product_details_scrape():
-    user_id = request.args.get('_id')
+    user_id = request.json.get('_id')
     if user_id is None or user_id.strip() == '':
         url = request.args.get('url')  
         scraped_data = scrape(url)  

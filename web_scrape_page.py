@@ -149,4 +149,16 @@ try:
 except Exception as e:
     print("An error occurred:", e)    # Quit the driver
 
+try:
+    # Wait for the image element to be visible
+    image_element = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.ID, "landingImage"))
+    )
+
+    # Extract the image source URL
+    image_url = image_element.get_attribute("src")
+    print("Image URL:", image_url)
+
+except Exception as e:
+    print("An error occurred:", e)
 driver.quit()

@@ -154,6 +154,18 @@ def scrape(url):
 
     except Exception as e:
         print("An error occurred:", e)    # Quit the driver
+    try:
+    # Wait for the image element to be visible
+        image_element = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "landingImage"))
+        )
+
+        # Extract the image source URL
+        image_url = image_element.get_attribute("src")
+        print("Image URL:", image_url)
+
+    except Exception as e:
+        print("An error occurred:", e)
     finally:
         driver.quit()
     return {
@@ -162,7 +174,8 @@ def scrape(url):
             "technical_details": cleaned_data_dict,
             "details": text_list,
             "category": a_tag_text,
-            "url": url
+            "url": url,
+            "picture":image_url
         }
 
 
@@ -189,7 +202,7 @@ class ProductDetailsSchema(Schema):
     _id = fields.String(dump_only=True)
     title = fields.String(required=True)
     price = fields.String(required=True)
-    picture = fields.String()
+    picture = fields.String(required=True)
     technical_details = fields.Dict()
     details = fields.List(fields.String())
     similar_products = fields.List(fields.String())
@@ -293,9 +306,9 @@ def create_product_details():
 # Flask route to create product details
 @app.route('/product_details_scrape', methods=['POST'])
 def create_product_details_scrape():
-    user_id = request.json.get('_id')
+    user_id = request.args.get('_id')
     if user_id is None or user_id.strip() == '':
-        url = request.args.get('url')  
+        url = request.json.get('url')  
         scraped_data = scrape(url)  
         try:
             validated_data = ProductDetailsSchema().load(scraped_data)

@@ -29,7 +29,7 @@ class ProductDetailsSchema(Schema):
     _id = fields.String(dump_only=True)
     title = fields.String(required=True)
     price = fields.String(required=True)
-    picture = fields.String(required=True)
+    picture = fields.String()
     technical_details = fields.List(fields.Nested(TechnicalDetailSchema))
     details = fields.List(fields.String())
     similar_products = fields.List(fields.String())

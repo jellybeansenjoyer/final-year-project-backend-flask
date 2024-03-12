@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
 driver = webdriver.Firefox()
-url = 'https://www.amazon.in/LG-Microwave-MS2043BP-Black-Starter/dp/B07MC84QPL/ref=sr_1_4?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.fgLnH0ndc0u3LLTV4JX5cmmQaULiqB92L5A3IBZjuHBlDqLeZ8O-Oz_t57affA-PoDllb2Pz1FC0faMIechBrSA9zCBlx--hWYuldc4waJ_ulWHdHYx5WBzawcHzI0sZrAOEKdYD9moyX7pigvAjhKIFvi3Bc9uvmmoMY1-9a4MwARdel6b5x1cogEkp-itk1Re2cMkhqfcDVwYy5n96HepIY7DHQOIj6i96KtceUmtJvoRdYxpWUP5pqnl5JmDPgKcxhE9m_DpRobOE-bfX-82Vkt5yw_ynTg-Ek9XUKRE.tDZYy49ytNcyrwuhwpnhMXPxlbMFufaOCJ1sCax0UeU&dib_tag=se&pd_rd_r=01321daf-400c-47f0-a4b6-a487374bb254&pd_rd_w=1GcNb&pd_rd_wg=PHdIf&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=DSEQ04R1W9EDB22QQ3QY&qid=1710240373&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-4'
+url = 'https://www.amazon.in/LG-Microwave-MS2043BP-Black-Starter/dp/B07MC84QPL/ref=sr_1_4?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.fgLnH0ndc0u3LLTV4JX5cmmQaULiqB92L5A3IBZjuHBlDqLeZ8O-Oz_t57affA-PoDllb2Pz1FC0faMIechBrSA9zCBlx--hWYuldc4waJ_ulWHdHYx5WBzawcHzI0sZrAOEKdYD9moyX7pigvAjhKIFvi3Bc9uvmmoMY1-9a4MwARdel6b5x1cogEkp-itk1Re2cMkhqfcDVwYy5n96HepIY7DHQOIj6i96KtceUmtJvoRdYxpWUP5pqnl5JmDPgKcxhE9m_DpRobOE-bfX-82Vkt5yw_ynTg-Ek9XUKRE.tDZYy49ytNcyrwuhwpnhMXPxlbMFufaOCJ1sCax0UeU&dib_tag=se&pd_rd_r=01321daf-400c-47f0-a4b6-a487374bb254&pd_rd_w=1GcNb&pd_rd_wg=PHdIf&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=DSEQ04R1W9EDB22QQ3QY&qid=1710240373&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-4&th=1'
 driver.get(url)
 
 try:

@@ -26,18 +26,32 @@ def scrape(url):
         print("Title:", product_title_text)
     except Exception as e:
         print("An error occurred:", e)
+    price_text = 0
     try:
-        print("price extraction begins:")
-        # Find the price element
+        print("Price extraction begins:")
+        # Wait for the price element to be visible
         price_element = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.CLASS_NAME, "a-price-whole"))
+            EC.visibility_of_element_located((By.XPATH, "//span[@class='a-price-whole']"))
         )
-        
+
         # Extract the price text
         price_text = price_element.text.strip()
         print("Price:", price_text)
     except Exception as e:
         print("An error occurred:", e)    
+        try:
+            
+            # Wait for the price element to be visible
+            price_element = WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, 'p.a-spacing-none.a-text-left.a-size-mini.twisterSwatchPrice'))
+            )
+
+            # Extract the price text
+            price_text = price_element.text.strip()
+            print("Price:", price_text)
+
+        except Exception as e:
+            print("An error occurred:", e)
     try:
         print("Details Extraction begins:")
         # Wait for the list of span elements to be present
@@ -180,6 +194,7 @@ def scrape(url):
 
     except Exception as e:
         print("An error occurred:", e)
+
     finally:
         driver.quit()
     return {
@@ -189,7 +204,8 @@ def scrape(url):
             "details": text_list,
             "category": a_tag_text,
             "url": url,
-            "picture":image_url
+            "picture":image_url,
+            "sentimental_score":"8.4582384342356"
         }
 
 
@@ -409,7 +425,7 @@ def get_user_products(user_id):
 @app.route('/scrape', methods=['GET'])
 def scrape_test():
     try:
-        scraped_data = scrape("https://www.amazon.in/Wesley-Milestone-Waterproof-Backpack-Business/dp/B084JGJ8PF/ref=sr_1_4?keywords=bags&qid=1697885232&sr=8-4&th=1")
+        scraped_data = scrape("https://www.amazon.in/LG-Microwave-MS2043BP-Black-Starter/dp/B07MC84QPL/ref=sr_1_4?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.fgLnH0ndc0u3LLTV4JX5cmmQaULiqB92L5A3IBZjuHBlDqLeZ8O-Oz_t57affA-PoDllb2Pz1FC0faMIechBrSA9zCBlx--hWYuldc4waJ_ulWHdHYx5WBzawcHzI0sZrAOEKdYD9moyX7pigvAjhKIFvi3Bc9uvmmoMY1-9a4MwARdel6b5x1cogEkp-itk1Re2cMkhqfcDVwYy5n96HepIY7DHQOIj6i96KtceUmtJvoRdYxpWUP5pqnl5JmDPgKcxhE9m_DpRobOE-bfX-82Vkt5yw_ynTg-Ek9XUKRE.tDZYy49ytNcyrwuhwpnhMXPxlbMFufaOCJ1sCax0UeU&dib_tag=se&pd_rd_r=01321daf-400c-47f0-a4b6-a487374bb254&pd_rd_w=1GcNb&pd_rd_wg=PHdIf&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=DSEQ04R1W9EDB22QQ3QY&qid=1710240373&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-4&th=1")
         return jsonify(scraped_data), 200
     except Exception as e:
         print("An error occurred during scraping:", e)
@@ -418,7 +434,7 @@ def scrape_test():
 @app.route('/d',methods=['GET'])
 def d():
     try:
-        scrape("https://www.amazon.in/Wesley-Milestone-Waterproof-Backpack-Business/dp/B084JGJ8PF/ref=sr_1_4?keywords=bags&qid=1697885232&sr=8-4&th=1")
+        scrape("https://www.amazon.in/LG-Microwave-MS2043BP-Black-Starter/dp/B07MC84QPL/ref=sr_1_4?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.fgLnH0ndc0u3LLTV4JX5cmmQaULiqB92L5A3IBZjuHBlDqLeZ8O-Oz_t57affA-PoDllb2Pz1FC0faMIechBrSA9zCBlx--hWYuldc4waJ_ulWHdHYx5WBzawcHzI0sZrAOEKdYD9moyX7pigvAjhKIFvi3Bc9uvmmoMY1-9a4MwARdel6b5x1cogEkp-itk1Re2cMkhqfcDVwYy5n96HepIY7DHQOIj6i96KtceUmtJvoRdYxpWUP5pqnl5JmDPgKcxhE9m_DpRobOE-bfX-82Vkt5yw_ynTg-Ek9XUKRE.tDZYy49ytNcyrwuhwpnhMXPxlbMFufaOCJ1sCax0UeU&dib_tag=se&pd_rd_r=01321daf-400c-47f0-a4b6-a487374bb254&pd_rd_w=1GcNb&pd_rd_wg=PHdIf&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=DSEQ04R1W9EDB22QQ3QY&qid=1710240373&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-4&th=1")
         return jsonify("success"), 200
     except:
         return 400

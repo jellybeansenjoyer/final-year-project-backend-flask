@@ -9,10 +9,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-
+from scrape_reviews import scrape_reviews_fn
 def scrape(url):
     driver = webdriver.Firefox()
     driver.get(url)
+
 
     try:
         # Wait for the product title element to be visible
@@ -26,7 +27,7 @@ def scrape(url):
         print("Title:", product_title_text)
     except Exception as e:
         print("An error occurred:", e)
-    price_text = 0
+
     try:
         print("Price extraction begins:")
         # Wait for the price element to be visible
@@ -195,6 +196,20 @@ def scrape(url):
     except Exception as e:
         print("An error occurred:", e)
 
+    try:
+        see_more_link = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-hook="see-all-reviews-link-foot"]'))
+        )
+        see_more_link_href = see_more_link.get_attribute('href')
+        print("See more reviews link:", see_more_link_href)
+        
+        # Optionally, you can click the link if needed
+        see_more_link.click()
+        lst_of_reviews = scrape_reviews_fn(see_more_link_href)
+        
+    except Exception as e:
+        print("Error:", e)
+        
     finally:
         driver.quit()
     return {
@@ -205,7 +220,8 @@ def scrape(url):
             "category": a_tag_text,
             "url": url,
             "picture":image_url,
-            "sentimental_score":"8.4582384342356"
+            "sentimental_score":"8.4582384342356",
+            "reviews":lst_of_reviews
         }
 
 
@@ -225,7 +241,7 @@ class ReviewSchema(Schema):
     _id = fields.String(dump_only=True)
     title = fields.String(required=True)
     review = fields.String()
-    rating = fields.Float()
+    rating = fields.String()
 
 class ProductDetailsSchema(Schema):
     _id = fields.String(dump_only=True)

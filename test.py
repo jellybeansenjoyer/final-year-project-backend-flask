@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 # Initialize Selenium WebDriver
 driver = webdriver.Firefox()
-url = 'https://amazon.in/Logitech-B100-Optical-Mouse-Black/dp/B003L62T7W/ref=pd_rhf_dp_s_pd_crcd_d_sccl_2_2/258-0255438-8839862?pd_rd_w=H6IMm&content-id=amzn1.sym.785b16db-ca40-46a3-ae75-2b38bb48d1aa&pf_rd_p=785b16db-ca40-46a3-ae75-2b38bb48d1aa&pf_rd_r=J58HSRP2XYYWNQVQE7M2&pd_rd_wg=1ycQb&pd_rd_r=4eb2ed65-98a2-46d5-931b-e4715d9bf0d7&pd_rd_i=B003L62T7W&psc=1'
+url = 'https://www.amazon.in/Lloyd-Window-Copper-Golden-GLW18C4YWGEW/dp/B0BRKX5WWK/ref=sr_1_25?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.LpujZ4uISPUK8sa_6yNGVRbnpLAogbToTOMZRXNZaZL_lzG0mGiDVmo13WY0Ic5h--vBF_zwQhz5gJfnLcSxrm6CySTsa24gd8pNPWXFFx99O5XvrF67hJ_LXxnGjdEEVV5qwuYxWDqFEdb1dIIakWgWG8YvWWGgWjlz9tJ6Y4J0jk76K_m2-zD6N2FZ1Xh6Yk14wCLUVkoy68i_yhuFwJqswvJqylfcwHbfKTJ4zT3XdcQqwq-nPQBkM_IBpKruAHkCsO_580xrlLXyEkvE9iErOwncieH9COwzRps_c54.OFysy0qPj0YUaYWiTakzcoms6HdSMvs94Uh04cFnhKo&dib_tag=se&pd_rd_r=a9e97b88-6b2a-4f55-8f0e-11322119276f&pd_rd_w=bYL5B&pd_rd_wg=QIle5&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=8GKBT68W16RRSJF23TDW&qid=1710218113&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-25'
 driver.get(url)
 
 # Wait for the page to load completely

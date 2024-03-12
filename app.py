@@ -16,6 +16,7 @@ def scrape(url):
 
     try:
         # Wait for the product title element to be visible
+        print("Title Extraction Begins:")
         product_title_element = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "productTitle"))
         )
@@ -23,7 +24,10 @@ def scrape(url):
         # Extract the product title text
         product_title_text = product_title_element.text.strip()
         print("Title:", product_title_text)
-        
+    except Exception as e:
+        print("An error occurred:", e)
+    try:
+        print("price extraction begins:")
         # Find the price element
         price_element = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.CLASS_NAME, "a-price-whole"))
@@ -32,7 +36,10 @@ def scrape(url):
         # Extract the price text
         price_text = price_element.text.strip()
         print("Price:", price_text)
-        
+    except Exception as e:
+        print("An error occurred:", e)    
+    try:
+        print("Details Extraction begins:")
         # Wait for the list of span elements to be present
         spans = WebDriverWait(driver, 10).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.a-unordered-list.a-vertical.a-spacing-mini span.a-list-item"))
@@ -42,7 +49,10 @@ def scrape(url):
         text_list = [span.text.strip() for span in spans]
         print("List of Texts inside Span elements:")
         print("Details:", text_list)
-        
+    except Exception as e:
+        print("An error occurred:", e)
+    try:
+        print("Product Tech Details Extraction begins:")
         # Get the HTML of the table
         table_html = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "productDetails_techSpec_section_1"))
@@ -70,7 +80,7 @@ def scrape(url):
                 
                 # Add the name-value pair to the dictionary
                 data_dict[header_text] = data_text
-                
+
         # Print the dictionary
         print("Technical Specifications:")
         
@@ -90,6 +100,7 @@ def scrape(url):
     except Exception as e:
         print("An error occurred:", e)
     try:
+        print("Product Tech Details Additional Extraction begins:")
         # Wait for the product details table to be visible
         table_element = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "productDetails_detailBullets_sections1"))
@@ -130,6 +141,7 @@ def scrape(url):
         
 
     try:
+        print("Category extraction begins:")
         # Wait for the div element to be visible
         div_element = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "wayfinding-breadcrumbs_feature_div"))
@@ -154,8 +166,10 @@ def scrape(url):
 
     except Exception as e:
         print("An error occurred:", e)    # Quit the driver
+
     try:
-    # Wait for the image element to be visible
+        print("Image Extraction Begins:")
+        # Wait for the image element to be visible
         image_element = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, "landingImage"))
         )

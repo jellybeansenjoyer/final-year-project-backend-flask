@@ -3,9 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 
 driver = webdriver.Firefox()
-url = 'https://www.amazon.in/LG-Inverter-Fully-Automatic-FHM1065SDW-Technology/dp/B09Q94H46F/ref=sr_1_11?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.huIQjSkTuPfYXaUe3MtXkURXTCCq9Glj01c89ASnHbi2m5CSAM1-yw_Y14AjH7bMugEsgorg_rKbhysn0Oa1nUHZ8L7wREMmSl53GHOvCdYROfbJ8B8jXywNgw9CQ1aP8sV4Q5z0XgZJbJf7qfDdciV2vKQVElSvZ0oEfO22KDxYxOeIpSOcIlV3TnVQ6eetD8Qugraz299z0MIVbFA2VttCl0OjUV5f8DjSbyVh2rneCSuoLTFELfKqWjRD60pLNMmW-YJGIrEzwDj0UhTfY-KoID_Ru3qF7v2JzwpOwVE.81UMYDTcujs8gjQfye2pBLMqcNr85UfVn_tmvjhuXKk&dib_tag=se&pd_rd_r=f4b69a0a-c2e1-4630-933b-7218a36f020c&pd_rd_w=CI3BF&pd_rd_wg=hl0TS&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=JW18VJVZQ7KT05BN5XQ5&qid=1710224637&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-11'
+url = 'https://www.amazon.in/Whirlpool-7-5-Semi-Automatic-ACE-SUPREME/dp/B083G25P9L/ref=sr_1_20?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.huIQjSkTuPfYXaUe3MtXkURXTCCq9Glj01c89ASnHbi2m5CSAM1-yw_Y14AjH7bMugEsgorg_rKbhysn0Oa1nUHZ8L7wREMmSl53GHOvCdYROfbJ8B8jXywNgw9CQ1aP8sV4Q5z0XgZJbJf7qfDdciV2vKQVElSvZ0oEfO22KDxYxOeIpSOcIlV3TnVQ6eetD8Qugraz299z0MIVbFA2VttCl0OjUV5f8DjSbyVh2rneCSuoLTFELfKqWjRD60pLNMmW-YJGIrEzwDj0UhTfY-KoID_Ru3qF7v2JzwpOwVE.81UMYDTcujs8gjQfye2pBLMqcNr85UfVn_tmvjhuXKk&dib_tag=se&pd_rd_r=f4b69a0a-c2e1-4630-933b-7218a36f020c&pd_rd_w=CI3BF&pd_rd_wg=hl0TS&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=JW18VJVZQ7KT05BN5XQ5&qid=1710224637&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-20'
 driver.get(url)
 
 try:
@@ -20,18 +21,32 @@ try:
     print("Title:", product_title_text)
 except Exception as e:
     print("An error occurred:", e)
+
 try:
-    print("price extraction begins:")
-    # Find the price element
+    print("Price extraction begins:")
+    # Wait for the price element to be visible
     price_element = WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.CLASS_NAME, "a-price-whole"))
+        EC.visibility_of_element_located((By.XPATH, "//span[@class='a-price-whole']"))
     )
-    
+
     # Extract the price text
     price_text = price_element.text.strip()
     print("Price:", price_text)
 except Exception as e:
     print("An error occurred:", e)    
+    try:
+        
+        # Wait for the price element to be visible
+        price_element = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, 'p.a-spacing-none.a-text-left.a-size-mini.twisterSwatchPrice'))
+        )
+
+        # Extract the price text
+        price_text = price_element.text.strip()
+        print("Price:", price_text)
+
+    except Exception as e:
+        print("An error occurred:", e)
 try:
     print("Details Extraction begins:")
     # Wait for the list of span elements to be present
@@ -174,4 +189,4 @@ try:
 
 except Exception as e:
     print("An error occurred:", e)
-driver.quit()
+

@@ -5,11 +5,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
 driver = webdriver.Firefox()
-url = 'https://www.amazon.in/Wesley-Milestone-Waterproof-Backpack-Business/dp/B084JGJ8PF/ref=sr_1_4?keywords=bags&qid=1697885232&sr=8-4&th=1'
+url = 'https://www.amazon.in/LG-Inverter-Fully-Automatic-FHM1065SDW-Technology/dp/B09Q94H46F/ref=sr_1_11?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.huIQjSkTuPfYXaUe3MtXkURXTCCq9Glj01c89ASnHbi2m5CSAM1-yw_Y14AjH7bMugEsgorg_rKbhysn0Oa1nUHZ8L7wREMmSl53GHOvCdYROfbJ8B8jXywNgw9CQ1aP8sV4Q5z0XgZJbJf7qfDdciV2vKQVElSvZ0oEfO22KDxYxOeIpSOcIlV3TnVQ6eetD8Qugraz299z0MIVbFA2VttCl0OjUV5f8DjSbyVh2rneCSuoLTFELfKqWjRD60pLNMmW-YJGIrEzwDj0UhTfY-KoID_Ru3qF7v2JzwpOwVE.81UMYDTcujs8gjQfye2pBLMqcNr85UfVn_tmvjhuXKk&dib_tag=se&pd_rd_r=f4b69a0a-c2e1-4630-933b-7218a36f020c&pd_rd_w=CI3BF&pd_rd_wg=hl0TS&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=JW18VJVZQ7KT05BN5XQ5&qid=1710224637&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-11'
 driver.get(url)
 
 try:
     # Wait for the product title element to be visible
+    print("Title Extraction Begins:")
     product_title_element = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, "productTitle"))
     )
@@ -17,7 +18,10 @@ try:
     # Extract the product title text
     product_title_text = product_title_element.text.strip()
     print("Title:", product_title_text)
-    
+except Exception as e:
+    print("An error occurred:", e)
+try:
+    print("price extraction begins:")
     # Find the price element
     price_element = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.CLASS_NAME, "a-price-whole"))
@@ -26,7 +30,10 @@ try:
     # Extract the price text
     price_text = price_element.text.strip()
     print("Price:", price_text)
-    
+except Exception as e:
+    print("An error occurred:", e)    
+try:
+    print("Details Extraction begins:")
     # Wait for the list of span elements to be present
     spans = WebDriverWait(driver, 10).until(
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, "ul.a-unordered-list.a-vertical.a-spacing-mini span.a-list-item"))
@@ -36,7 +43,10 @@ try:
     text_list = [span.text.strip() for span in spans]
     print("List of Texts inside Span elements:")
     print("Details:", text_list)
-    
+except Exception as e:
+    print("An error occurred:", e)
+try:
+    print("Product Tech Details Extraction begins:")
     # Get the HTML of the table
     table_html = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, "productDetails_techSpec_section_1"))
@@ -64,7 +74,7 @@ try:
             
             # Add the name-value pair to the dictionary
             data_dict[header_text] = data_text
-            
+
     # Print the dictionary
     print("Technical Specifications:")
     
@@ -84,6 +94,7 @@ try:
 except Exception as e:
     print("An error occurred:", e)
 try:
+    print("Product Tech Details Additional Extraction begins:")
     # Wait for the product details table to be visible
     table_element = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, "productDetails_detailBullets_sections1"))
@@ -124,6 +135,7 @@ except Exception as e:
     
 
 try:
+    print("Category extraction begins:")
     # Wait for the div element to be visible
     div_element = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, "wayfinding-breadcrumbs_feature_div"))
@@ -150,6 +162,7 @@ except Exception as e:
     print("An error occurred:", e)    # Quit the driver
 
 try:
+    print("Image Extraction Begins:")
     # Wait for the image element to be visible
     image_element = WebDriverWait(driver, 10).until(
         EC.visibility_of_element_located((By.ID, "landingImage"))

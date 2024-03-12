@@ -3,9 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+from scrape_reviews import scrape_reviews_fn
 
 driver = webdriver.Firefox()
-url = 'https://www.amazon.in/LG-Microwave-MS2043BP-Black-Starter/dp/B07MC84QPL/ref=sr_1_4?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.fgLnH0ndc0u3LLTV4JX5cmmQaULiqB92L5A3IBZjuHBlDqLeZ8O-Oz_t57affA-PoDllb2Pz1FC0faMIechBrSA9zCBlx--hWYuldc4waJ_ulWHdHYx5WBzawcHzI0sZrAOEKdYD9moyX7pigvAjhKIFvi3Bc9uvmmoMY1-9a4MwARdel6b5x1cogEkp-itk1Re2cMkhqfcDVwYy5n96HepIY7DHQOIj6i96KtceUmtJvoRdYxpWUP5pqnl5JmDPgKcxhE9m_DpRobOE-bfX-82Vkt5yw_ynTg-Ek9XUKRE.tDZYy49ytNcyrwuhwpnhMXPxlbMFufaOCJ1sCax0UeU&dib_tag=se&pd_rd_r=01321daf-400c-47f0-a4b6-a487374bb254&pd_rd_w=1GcNb&pd_rd_wg=PHdIf&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=DSEQ04R1W9EDB22QQ3QY&qid=1710240373&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-4&th=1'
+url = 'https://www.amazon.in/LG-Microwave-MS2043BP-Black-Starter/dp/B07MC84QPL/ref=sr_1_4?_encoding=UTF8&content-id=amzn1.sym.58c90a12-100b-4a2f-8e15-7c06f1abe2be&dib=eyJ2IjoiMSJ9.fgLnH0ndc0u3LLTV4JX5cmmQaULiqB92L5A3IBZjuHBlDqLeZ8O-Oz_t57affA-PoDllb2Pz1FC0faMIechBrSA9zCBlx--hWYuldc4waJ_ulWHdHYx5WBzawcHzI0sZrAOEKdYD9moyX7pigvAjhKIFvi3Bc9uvmmoMY1-9a4MwARdel6b5x1cogEkp-itk1Re2cMkhqfcDVwYy5n96HepIY7DHQOIj6i96KtceUmtJvoRdYxpWUP5pqnl5JmDPgKcxhE9m_DpRobOE-bfX-82Vkt5yw_ynTg-Ek9XUKRE.tDZYy49ytNcyrwuhwpnhMXPxlbMFufaOCJ1sCax0UeU&dib_tag=se&pd_rd_r=01321daf-400c-47f0-a4b6-a487374bb254&pd_rd_w=1GcNb&pd_rd_wg=PHdIf&pf_rd_p=58c90a12-100b-4a2f-8e15-7c06f1abe2be&pf_rd_r=DSEQ04R1W9EDB22QQ3QY&qid=1710240373&refinements=p_85%3A10440599031&rps=1&s=kitchen&sr=1-4'
 driver.get(url)
 
 try:
@@ -189,3 +190,16 @@ try:
 except Exception as e:
     print("An error occurred:", e)
 
+try:
+    see_more_link = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-hook="see-all-reviews-link-foot"]'))
+    )
+    see_more_link_href = see_more_link.get_attribute('href')
+    print("See more reviews link:", see_more_link_href)
+    
+    # Optionally, you can click the link if needed
+    see_more_link.click()
+    lst_of_reviews = scrape_reviews_fn(see_more_link_href)
+    
+except Exception as e:
+    print("Error:", e)

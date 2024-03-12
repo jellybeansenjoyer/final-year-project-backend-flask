@@ -224,7 +224,6 @@ class TechnicalDetailSchema(Schema):
 class ReviewSchema(Schema):
     _id = fields.String(dump_only=True)
     title = fields.String(required=True)
-    images = fields.List(fields.String(), required=False)
     review = fields.String()
     rating = fields.Float()
 

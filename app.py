@@ -223,7 +223,7 @@ def scrape(url):
             "category": a_tag_text,
             "url": url,
             "picture":image_url,
-            "sentimental_score":str(y/2.4),
+            "sentimental_score":str(y/3.0),
             "reviews":lst_of_reviews
         }
 

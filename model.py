@@ -24,8 +24,8 @@ nltk.download('vader_lexicon')
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('punkt')
-
-x = [{'title': '5.0 out of 5 stars\nNice product', 'review': '5.0 out of 5 stars', 'rating': 'The product is good. With all the features and works well'}, {'title': '4.0 out of 5 stars\nEasy to use and value for money', 'review': '4.0 out of 5 stars', 'rating': 'It is easy and sturdy in usage.. makes some extra noise, which could have been reduced, but heats well, easy to clean and low on maintenance.'}, {'title': '5.0 out of 5 stars\ndebasishdas4321@gmail.com', 'review': '5.0 out of 5 stars', 'rating': "Very good item but missing the owner's manual, cook book and shelf. How can i get those missing materials?"}, {'title': '5.0 out of 5 stars\nVery good.', 'review': '5.0 out of 5 stars', 'rating': 'Worth the money paid.'}, {'title': '5.0 out of 5 stars\ngood to know', 'review': '5.0 out of 5 stars', 'rating': 'Easy to use, working well.'}, {'title': '4.0 out of 5 stars\nNice product with good quality', 'review': '4.0 out of 5 stars', 'rating': 'It has good build quality with all features in solo microwave and can be perfect for solo functions of microvave.'}, {'title': '1.0 out of 5 stars\nReceived defective product', 'review': '1.0 out of 5 stars', 'rating': 'Received defective product it keeps changing time on its own and the panel becomes unresponsive making me switch it off from the main switch. On calling for repair company says ask seller to replace and seller says ask company to repair. Stuck.'}, {'title': '3.0 out of 5 stars\nGood but very noisy.', 'review': '3.0 out of 5 stars', 'rating': 'LG Makes good quality products, but this one is too noisy and poorly designed.I bought it for my office. Opening and closing the lid of this microwave is so loud that everyone in the office knows someone is using the microwave. Makes a loud clunky-plasticky-metally thud when opening or closing the lid. Since the opening and closing of the lid is spring-loaded, you can not avoid the noise even with slow careful operation. Other than that, there is no problem. But this noisy lid is a good enough deal-breaker for me.Would definitely advise to avoid this model if you are buying for an office or for a quiet home.'}, {'title': '4.0 out of 5 stars\nMicrowave LG', 'review': '4.0 out of 5 stars', 'rating': "It's a good product. Except the door makes high noise while closing. Rest everything fine."}, {'title': '4.0 out of 5 stars\nOk product', 'review': '4.0 out of 5 stars', 'rating': 'Ok kind of product but a little noisy. Serves purpose'}]
+# x =[{'title': '5.0 out of 5 stars\nvery nice bag - compact - good looks', 'review': '5.0 out of 5 stars', 'rating': 'i was carrying a lumpsy bag to office. after purchasing this it made a huge difference, not only does it holds all contents, its looks very compact and the compartments are sized well. Very nicely stiched.'}, {'title': '4.0 out of 5 stars\nVersatile and Reliable Companion for All Your Needs', 'review': '4.0 out of 5 stars', 'rating': "I recently purchased the Wesley Milestone 2.0 Casual Waterproof Laptop Backpack, and it has exceeded my expectations in terms of functionality, durability, and style. This backpack has quickly become my go-to companion for various occasions, whether it's for work, school, travel, or everyday use.One of the standout features of this backpack is its impressive storage capacity. With dimensions of 13x18 inches and a spacious 30L capacity, it easily accommodates my 15.6-inch laptop, books, notebooks, and other essentials without feeling bulky or overwhelming. The well-designed compartments and pockets help me keep my belongings organized and easily accessible. The laptop compartment is well-padded, providing excellent protection for my device.The waterproof feature of the backpack is a significant advantage, especially during unexpected weather conditions or accidental spills. It gives me peace of mind, knowing that my belongings are safe and protected from moisture.The build quality of the Wesley Milestone 2.0 backpack is outstanding. The materials used are durable and show no signs of wear even after months of daily use. The zippers are sturdy and glide smoothly, ensuring easy access to my belongings. The reinforced stitching adds to the overall durability and longevity of the backpack.Comfort is another aspect where this backpack shines. The ergonomic design, padded shoulder straps, and back panel provide excellent support and distribute the weight evenly, even when carrying heavy loads. The adjustable straps allow for a customized fit, reducing strain and fatigue during extended periods of wear.The stylish design of the backpack is an added bonus. The blue and black color combination is visually appealing and versatile, suitable for both casual and professional settings. The sleek and minimalistic look adds a touch of sophistication while maintaining a practical and functional design.Whether I'm commuting to the office, attending classes, or embarking on a weekend getaway, the Wesley Milestone 2.0 Casual Waterproof Laptop Backpack has proven to be a reliable and versatile companion. Its durability, ample storage, comfort, and stylish design make it a standout choice in the market.In conclusion, I highly recommend the Wesley Milestone 2.0 Casual Waterproof Laptop Backpack to anyone in need of a dependable and multi-functional bag. Its quality craftsmanship, spaciousness, and attractive design make it a worthwhile investment that will serve you well in various situations for years to come."}, {'title': '5.0 out of 5 stars\nSo spacious', 'review': '5.0 out of 5 stars', 'rating': 'This bag is really really good for college or university or travelling because of the quality and space inside. I am really satisfied.  I bought it to take to the university and I was not disappointed with the space inside enough to Carry my laptop and other stuff I need.  The quality is really 👌 good.  Thank you so much. The pricing is reasonable too'}, {'title': '5.0 out of 5 stars\nGood. Modal. Coler', 'review': '5.0 out of 5 stars', 'rating': 'Fastdellwery. Amazon. Good. Quality. Bag. Good. Modal.  Good. Colour. Handsome thanks thanks Amazon'}, {'title': '3.0 out of 5 stars\nI returned the bag', 'review': '3.0 out of 5 stars', 'rating': 'I like the look and quality also nice.But I wanted it for my laptop, the bag has good laptop compartment also But in the bottom there is no safety for the laptop.'}, {'title': '4.0 out of 5 stars\nDurable and Classy', 'review': '4.0 out of 5 stars', 'rating': "I would have given this 5 star but it's not upto that mark yet! The body is sleek and great the texture of cloth is great but the only weak point is that it's strap started to tear away in less than a month.. that's why a 4 star rating apart from that it even protected the content during rain.. so I am satisfied."}, {'title': '5.0 out of 5 stars\nPremium product', 'review': '5.0 out of 5 stars', 'rating': 'Premium feel product at such a cheap price'}, {'title': '5.0 out of 5 stars\nGreat,  good quality', 'review': '5.0 out of 5 stars', 'rating': 'Good looking and easy to carry'}, {'title': '4.0 out of 5 stars\nIt is wide then normal school bag and short.', 'review': '4.0 out of 5 stars', 'rating': 'Front look is good but back has low level material. Only some books can fit best for college and university use. Laptop can fit oroperly. Just one thing i dont like its wide then  normal bags and short in height  .'}, {'title': '4.0 out of 5 stars\nGreat Product', 'review': '4.0 out of 5 stars', 'rating': 'Honestly speaking this bagpack is really good interms of quality as well as style'}]
+# x = [{'title': '5.0 out of 5 stars\nNice product', 'review': '5.0 out of 5 stars', 'rating': 'The product is good. With all the features and works well'}, {'title': '4.0 out of 5 stars\nEasy to use and value for money', 'review': '4.0 out of 5 stars', 'rating': 'It is easy and sturdy in usage.. makes some extra noise, which could have been reduced, but heats well, easy to clean and low on maintenance.'}, {'title': '5.0 out of 5 stars\ndebasishdas4321@gmail.com', 'review': '5.0 out of 5 stars', 'rating': "Very good item but missing the owner's manual, cook book and shelf. How can i get those missing materials?"}, {'title': '5.0 out of 5 stars\nVery good.', 'review': '5.0 out of 5 stars', 'rating': 'Worth the money paid.'}, {'title': '5.0 out of 5 stars\ngood to know', 'review': '5.0 out of 5 stars', 'rating': 'Easy to use, working well.'}, {'title': '4.0 out of 5 stars\nNice product with good quality', 'review': '4.0 out of 5 stars', 'rating': 'It has good build quality with all features in solo microwave and can be perfect for solo functions of microvave.'}, {'title': '1.0 out of 5 stars\nReceived defective product', 'review': '1.0 out of 5 stars', 'rating': 'Received defective product it keeps changing time on its own and the panel becomes unresponsive making me switch it off from the main switch. On calling for repair company says ask seller to replace and seller says ask company to repair. Stuck.'}, {'title': '3.0 out of 5 stars\nGood but very noisy.', 'review': '3.0 out of 5 stars', 'rating': 'LG Makes good quality products, but this one is too noisy and poorly designed.I bought it for my office. Opening and closing the lid of this microwave is so loud that everyone in the office knows someone is using the microwave. Makes a loud clunky-plasticky-metally thud when opening or closing the lid. Since the opening and closing of the lid is spring-loaded, you can not avoid the noise even with slow careful operation. Other than that, there is no problem. But this noisy lid is a good enough deal-breaker for me.Would definitely advise to avoid this model if you are buying for an office or for a quiet home.'}, {'title': '4.0 out of 5 stars\nMicrowave LG', 'review': '4.0 out of 5 stars', 'rating': "It's a good product. Except the door makes high noise while closing. Rest everything fine."}, {'title': '4.0 out of 5 stars\nOk product', 'review': '4.0 out of 5 stars', 'rating': 'Ok kind of product but a little noisy. Serves purpose'}]
 def Sentimental_score(x):    
     reviews = []
     ratings = []
@@ -75,16 +75,16 @@ def Sentimental_score(x):
     translator = Translator()
 
         # Detect the language of the paragraph
-    language = translator.detect(paragraph).lang
+    # language = translator.detect(paragraph).lang
 
         # If the detected language is not English, translate the paragraph to English
-    if language != 'en':
-        translated_paragraph = translator.translate(paragraph, src=language, dest='en').text
-    else:
-        translated_paragraph = paragraph
+    # if language != 'en':
+    #     translated_paragraph = translator.translate(paragraph, src=language, dest='en').text
+    # else:
+    #     translated_paragraph = paragraph
 
     # Assign the translated paragraph back to the original variable
-    paragraph = translated_paragraph
+    # paragraph = translated_paragraph
 
     # Print the translated paragraph
     #print(paragraph)
@@ -230,8 +230,8 @@ def Sentimental_score(x):
     # You can select the best model based on the evaluation metric (e.g., MSE)
 
     return paragraph , normalized_sentiment_score,result_string
-paragraph , y ,z = Sentimental_score(x)
-print("Sentiment Score:",y)
+# paragraph , y ,z = Sentimental_score(x)
+# print("Sentiment Score:",y)
 
 
 def summarize_paragraph(paragraph):
@@ -261,11 +261,11 @@ def summarize_paragraph(paragraph):
     return summary_lines
 
 # Call the function to get the summary lines
-summary_lines = summarize_paragraph(paragraph)
+# summary_lines = summarize_paragraph(paragraph)
 
-# Print the summary lines
-for i, line in enumerate(summary_lines):
-    print(f" {i+1}: {line}\n")
+# # Print the summary lines
+# for i, line in enumerate(summary_lines):
+#     print(f" {i+1}: {line}\n")
 
-#print(paragraph)
-print("length of good,bad, neutral:",z)
+# #print(paragraph)
+# print("length of good,bad, neutral:",z)

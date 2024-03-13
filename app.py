@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from scrape_reviews import scrape_reviews_fn
+from model import Sentimental_score
 def scrape(url):
     driver = webdriver.Firefox()
     driver.get(url)
@@ -210,8 +211,10 @@ def scrape(url):
     except Exception as e:
         print("Error:", e)
         
-    finally:
-        driver.quit()
+    paragraph,y,z = Sentimental_score(lst_of_reviews)
+    print(y)
+    print(z)
+    print(paragraph)
     return {
             "title": product_title_text,
             "price": price_text,
@@ -220,7 +223,7 @@ def scrape(url):
             "category": a_tag_text,
             "url": url,
             "picture":image_url,
-            "sentimental_score":"8.4582384342356",
+            "sentimental_score":str(y/2.4),
             "reviews":lst_of_reviews
         }
 

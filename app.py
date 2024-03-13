@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from scrape_reviews import scrape_reviews_fn
+from summarize import expect_recom
 from model import Sentimental_score
 def scrape(url):
     driver = webdriver.Firefox()
@@ -215,6 +216,7 @@ def scrape(url):
     print(y)
     print(z)
     print(paragraph)
+    # expect_recom(paragraph)
     return {
             "title": product_title_text,
             "price": price_text,

@@ -8,10 +8,11 @@ from selenium.webdriver.support import expected_conditions as EC
 url = 'http://192.168.0.190:1338/chat/'
 #url = 'https://chat.openai.com/chat'
 # Initialize Selenium WebDriver (assuming Firefox)
-driver = webdriver.Firefox()
-driver.get(url)
+
 def expect_recom(txt):
     # Wait for the page to load completely
+    driver = webdriver.Firefox()
+    driver.get(url)
     driver.implicitly_wait(10)
 
     # Find the textarea element by its id
@@ -87,3 +88,13 @@ def expect_recom(txt):
     time.sleep(5)
     driver.quit()
     return li_texts
+expect_recom('''Wireless Bluetooth Earbuds: "Superb sound, comfy fit, reliable Bluetooth."
+Multifunctional Blender: "Sleek, versatile, easy cleanup."
+Portable Power Bank: "Compact, long-lasting, phone savior."
+Fitness Tracker Smartwatch: "Accurate, responsive, great value."
+Non-Stick Frying Pan: "Easy cooking, easy clean-up."
+Resistance Bands Set: "Durable, versatile, challenging workouts."
+Robot Vacuum Cleaner: "Effortless cleaning, powerful suction."
+Insulated Stainless Steel Water Bottle: "Keeps drinks cold, leak-proof, sleek."
+Instant Pot Multi-Cooker: "Speedy cooking, versatile options, kitchen essential."
+Noise-Canceling Headphones: "Peace in noise, top-notch sound. Give me in points how should i improve the quality of my product give only in 5 one line points, ''')

@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # URL to scrape
-url = 'http://192.168.0.190:1338/chat/'
+url = 'http://127.0.0.1:1338/chat/'
 #url = 'https://chat.openai.com/chat'
 # Initialize Selenium WebDriver (assuming Firefox)
 
